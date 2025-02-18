@@ -9,14 +9,13 @@ import requests
 from PIL import Image
 
 
-
 class Maps(QMainWindow):
     def __init__(self):
         super().__init__()
         self.initUI()
 
     def initUI(self):
-        self.setGeometry(0, 0, 700, 700)
+        self.setGeometry(0, 0, 600, 700)
         self.setWindowTitle('Карты')
 
         # Координаты
@@ -24,19 +23,23 @@ class Maps(QMainWindow):
         self.latitude = '56'
 
         # Масштаб
-        self.delta = "0.1"
+        self.delta = '10'
+
+        # Насколько градусов передвигается карта
+        self.move_k = float(self.delta) // 2
 
         # Ключ к API
         self.apikey = "f3a0fe3a-b07e-4840-a1da-06f18b2ddf13"
 
+        self.label = QLabel(self)
+        self.map = QPixmap('map.png')
+
         # Обновляем картинку
         self.refresh_map()
 
-        self.map = QPixmap('map.png')
-        self.label = QLabel(self)
+        # Картинка
         self.label.setPixmap(self.map)
         self.label.adjustSize()
-
 
     def refresh_map(self):
         map_params = {
@@ -51,6 +54,21 @@ class Maps(QMainWindow):
         im = BytesIO(response.content)
         opened_image = Image.open(im)
         opened_image.save('map.png')
+        self.map = QPixmap('map.png')
+        self.label.setPixmap(self.map)
+        self.label.update()
+
+    def keyPressEvent(self, event):
+        key = event.key()
+        if key == 16777235:
+            self.latitude = str(self.move_k + float(self.latitude))
+        elif key == 16777236:
+            self.longitude = str(self.move_k + float(self.longitude))
+        elif key == 16777237:
+            self.latitude = str(-self.move_k + float(self.latitude))
+        elif key == 16777234:
+            self.longitude = str(-self.move_k + float(self.longitude))
+        self.refresh_map()
 
 
 if __name__ == '__main__':
