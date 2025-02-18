@@ -23,10 +23,10 @@ class Maps(QMainWindow):
         self.latitude = '56'
 
         # Масштаб
-        self.delta = '10'
+        self.delta = '0.01'
 
         # Насколько градусов передвигается карта
-        self.move_k = float(self.delta) // 2
+        self.move_k = float(self.delta) / 4
 
         # Ключ к API
         self.apikey = "f3a0fe3a-b07e-4840-a1da-06f18b2ddf13"
