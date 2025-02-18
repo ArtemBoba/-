@@ -19,17 +19,20 @@ class Maps(QMainWindow):
         self.setWindowTitle('Карты')
 
         # Координаты
-        self.longitude = '38'
+        self.longitude = '-160'
         self.latitude = '56'
 
         # Масштаб
-        self.delta = '0.01'
+        self.delta = '5'
 
         # Насколько градусов передвигается карта
         self.move_k = float(self.delta) / 4
 
         # Ключ к API
         self.apikey = "f3a0fe3a-b07e-4840-a1da-06f18b2ddf13"
+
+        # Тема карты (dark или light)
+        self.theme = 'light'
 
         self.label = QLabel(self)
         self.map = QPixmap('map.png')
@@ -46,6 +49,7 @@ class Maps(QMainWindow):
             "ll": ",".join([self.longitude, self.latitude]),
             "spn": ",".join([self.delta, self.delta]),
             "apikey": self.apikey,
+            "theme": self.theme,
 
         }
 
@@ -61,13 +65,17 @@ class Maps(QMainWindow):
     def keyPressEvent(self, event):
         key = event.key()
         if key == 16777235:
-            self.latitude = str(self.move_k + float(self.latitude))
+            if not (float(self.latitude) > 90 - self.move_k - float(self.delta)):
+                self.latitude = str(self.move_k + float(self.latitude))
         elif key == 16777236:
-            self.longitude = str(self.move_k + float(self.longitude))
+            if not (float(self.longitude) > 180 - self.move_k - float(self.delta)):
+                self.longitude = str(self.move_k + float(self.longitude))
         elif key == 16777237:
-            self.latitude = str(-self.move_k + float(self.latitude))
+            if not(float(self.latitude) < -90 + self.move_k + float(self.delta)):
+                self.latitude = str(-self.move_k + float(self.latitude))
         elif key == 16777234:
-            self.longitude = str(-self.move_k + float(self.longitude))
+            if (float(self.longitude) > -180 + self.move_k + float(self.delta)):
+                self.longitude = str(-self.move_k + float(self.longitude))
         self.refresh_map()
 
 
