@@ -87,12 +87,12 @@ class Maps(QMainWindow):
             new_longitude = self.move_k + float(self.longitude)
             if new_longitude <= max_longitude:
                 self.longitude = str(new_longitude)
-        elif key == Qt.Key.Key_W: #Увеличение мастштаба
+        elif key == Qt.Key.Key_1: #Увеличение мастштаба
             new_delta = float(self.delta) - zoom_step
             if new_delta >= min_delta:
                 self.delta = str(new_delta)
                 self.move_k = float(self.delta) / 4
-        elif key == Qt.Key.Key_S: #Уменьшение мастштаба
+        elif key == Qt.Key.Key_0: #Уменьшение мастштаба
             new_delta = float(self.delta) + zoom_step
             if new_delta <= max_delta:
                 self.delta = str(new_delta)
