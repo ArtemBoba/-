@@ -36,7 +36,7 @@ class Maps(QMainWindow):
 
         layout = QVBoxLayout(self.central_widget)
         layout.addWidget(self.label)
-        self.central_widget.setLayout(layout)  # Установка Layout для central_widget
+        self.central_widget.setLayout(layout)
 
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
@@ -45,13 +45,13 @@ class Maps(QMainWindow):
             "ll": ",".join([self.longitude, self.latitude]),
             "spn": ",".join([self.delta, self.delta]),
             "apikey": self.apikey,
-            "l": "map"  # Ensure the map layer is specified
+            "l": "map"
         }
 
         map_api_server = "https://static-maps.yandex.ru/v1"
         try:
-            response = requests.get(map_api_server, params=map_params, timeout=5)  # Add timeout
-            response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)
+            response = requests.get(map_api_server, params=map_params, timeout=5)
+            response.raise_for_status()
             im = BytesIO(response.content)
             opened_image = Image.open(im)
             opened_image.save('map.png')
@@ -60,7 +60,6 @@ class Maps(QMainWindow):
             self.label.update()
         except requests.exceptions.RequestException as e:
             print(f"Request failed: {e}")
-            # Handle the error (e.g., display a default image or error message)
             self.label.setText("Ошибка загрузки карты.")
 
     def keyPressEvent(self, event):
